@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('transaccion', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('cuentaOrigen');
-            $table->unsignedBigInteger('cuentaDestino');
-            $table->double('valorTransferencia');
-            $table->foreign('cuentaOrigen')->references('id')->on('cuenta');
-            $table->foreign('cuentaDestino')->references('id')->on('cuenta');
+            $table->unsignedBigInteger('origen_id');
+            $table->unsignedBigInteger('destino_id');
+            $table->double('valor');
+            $table->foreign('origen_id')->references('id')->on('cuenta');
+            $table->foreign('destino_id')->references('id')->on('cuenta');
             $table->timestamps();
         });
     }
@@ -32,8 +32,8 @@ return new class extends Migration
     public function down()
     {
         Schema::table('transaccion', function (Blueprint $table) {
-            $table->dropForeign(['cuentaOrigen']);
-            $table->dropForeign(['cuentaDestino']);
+            $table->dropForeign(['origen_id']);
+            $table->dropForeign(['destino_id']);
         });
         Schema::dropIfExists('transaccion');
     }
