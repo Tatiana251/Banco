@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cuenta;
-use App\Models\Transaccion;
-use Exception;
+use App\Models\TransaccionPropia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use PhpParser\Node\Expr;
+use App\Models\Cuenta;
+use Exception;
 
-class TransaccionController extends Controller
+
+class TransaccionPropiaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,21 +18,12 @@ class TransaccionController extends Controller
      */
     public function index()
     {
-        // Eloquent - ORM (Object Relational Maping) Query Builder
         $userId = Auth::user()->id;
         $viewData = [
-            'cuentasOrigen' => Cuenta::where('user_id', '=', $userId)->get(),
-            'CuentasDestino' => Cuenta::where('user_id', '<>', $userId)->get()
+            'cuentasOrigen' => Cuenta::where('user_id', '=', $userId)->get()
         ];
-        return view('transaccion.index', $viewData);
+        return view('transaccion.propia', $viewData);
     }
-
-    public function listar()
-    {
-        $transacciones = Transaccion::paginate(50);
-        return view('transaccion.listar', compact('transacciones'));
-    }
-
 
     /**
      * Show the form for creating a new resource.
@@ -41,6 +32,7 @@ class TransaccionController extends Controller
      */
     public function create()
     {
+        //
     }
 
     /**
@@ -51,12 +43,13 @@ class TransaccionController extends Controller
      */
     public function store(Request $request)
     {
+        //
         $input = $request->all();
 
         try {
-            $transaccion = new Transaccion();
+            $transaccion = new TransaccionPropia();
             $transaccion->origen_id = $input['origen_id'];
-            $transaccion->destino_id = $input['destino_id'];
+            $transaccion->origen_id = $input['origen_id'];
             $transaccion->valor = $input['valor'];
 
             if ($transaccion->save()) {
@@ -66,35 +59,39 @@ class TransaccionController extends Controller
         } catch (Exception $ex) {
             $viewData = [
                 'cuentasOrigen' => Cuenta::where('user_id', '=', 1)->get(),
-                'CuentasDestino' => Cuenta::where('user_id', '<>', 1)->get(),
+                'cuentasOrigen' => Cuenta::where('user_id', '=', 1)->get(),
                 'errorMessage' => "Fallo al realizar transferencia, por favor intente de nuevo. " // . $ex->getMessage()
             ];
             return view('transaccion.index', $viewData);
         }
+
+
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $transaccion_id
+     * @param  \App\Models\TransaccionPropia  $transaccionPropia
      * @return \Illuminate\Http\Response
      */
-    public function show(int $transaccion_id)
+    public function show(int $transaccion_id )
     {
-        $transaccion = Transaccion::findOrFail($transaccion_id);
+        //
+
+        $transaccion = TransaccionPropia::findOrFail($transaccion_id);
         $viewData = [
             'transaccion' => $transaccion,
         ];
-        return view('transaccion.comprobante', $viewData);
+        return view('transaccion.comprobantePropio', $viewData);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Transaccion  $transaccion
+     * @param  \App\Models\TransaccionPropia  $transaccionPropia
      * @return \Illuminate\Http\Response
      */
-    public function edit(Transaccion $transaccion)
+    public function edit(TransaccionPropia $transaccionPropia)
     {
         //
     }
@@ -103,10 +100,10 @@ class TransaccionController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Transaccion  $transaccion
+     * @param  \App\Models\TransaccionPropia  $transaccionPropia
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Transaccion $transaccion)
+    public function update(Request $request, TransaccionPropia $transaccionPropia)
     {
         //
     }
@@ -114,10 +111,10 @@ class TransaccionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Transaccion  $transaccion
+     * @param  \App\Models\TransaccionPropia  $transaccionPropia
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Transaccion $transaccion)
+    public function destroy(TransaccionPropia $transaccionPropia)
     {
         //
     }

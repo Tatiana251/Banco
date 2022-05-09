@@ -19,6 +19,9 @@ class Transaccion extends Model
         return $this->belongsTo(Cuenta::class, 'destino_id');
     }
 
+    public function getCodigoAttribute() {
+        return str_pad($this->id, 6, "0", STR_PAD_LEFT);
+    }
 
     public function descontar() {
         $this->origen->valor -= $this->valor;

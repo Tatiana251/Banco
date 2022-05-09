@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TransaccionController;
+use App\Http\Controllers\TransaccionPropiaController;
+use App\Models\TransaccionPropia;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,12 +17,24 @@ use App\Http\Controllers\TransaccionController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
+Route::get('propia',[TransaccionPropiaController::class,'index'])->name('transaccion.propia');
+Route::post('transferir',[TransaccionPropiaController::class,'store'])->name('transaccion.store');
+Route::get('transaccionPropia/{transaccion_id}',[TransaccionPropiaController::class,'show'])->name('transaccion.show');
 
-Route::get('index',[TransaccionController::class,'index']);
-Route::post('transferir',[TransaccionController::class,'store']);
+Route::get('transferir',[TransaccionController::class,'index'])->name('transaccion.index');
+Route::post('transferir',[TransaccionController::class,'store'])->name('transaccion.store');
+Route::get('transaccion/{transaccion_id}',[TransaccionController::class,'show'])->name('transaccion.show');
+Route::get('listar',[TransaccionController::class,'listar'])->name('transaccion.listar');
+
+Route::get('/inicio', function () {
+    return view('inicio');
+});
+
+
+
+
